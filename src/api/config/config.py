@@ -10,6 +10,11 @@ DATABASE_USER_PASSWORD = ''
 DATABASE_PORT = '3306'
 SQLITE_URI = f'sqlite:////tmp/{SQLITE_DATABASE}.db'
 
+import secrets
+JWT_SECRET_KEY = secrets.token_hex(16)
+print('KEY ==>', JWT_SECRET_KEY)
+
+
 class Config(object):
     DEBUG = False
     TESTING = False

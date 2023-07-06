@@ -2,14 +2,18 @@ from flask import Blueprint
 
 from ..controllers.authors import AuthorController
 
+from flask_jwt_extended import jwt_required
+
 # let's configure the Blueprint
 authors_api = Blueprint('authors', __name__)
 
 
 @authors_api.route('/', methods=['POST'])
+@jwt_required
 def register_author():
     '''register an author'''
     return AuthorController.register_author()
+
 
 @authors_api.route('/', methods = ['GET'])
 def get_all_authors():

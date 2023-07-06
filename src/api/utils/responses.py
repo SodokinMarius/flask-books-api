@@ -72,6 +72,13 @@ BAD_REQUEST_400 = {
 "code": "badRequest",
 "message": "Bad request"
 }
+
+BAD_REQUEST_400_RESSOURCE_EXISTS = {
+"http_code": 400,
+"code": "RESSOURCE_EXISTS_ALREADY",
+"message": "This ressource already exists !!"
+}
+
 SERVER_ERROR_500 = {
 "http_code": 500,
 "code": "serverError",

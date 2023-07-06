@@ -11,18 +11,28 @@ TestingConfig
 )
 from api.utils.responses import response_with
 import api.utils.responses as resp
-
+from  api.config.config import  JWT_SECRET_KEY
 from api.utils.database import db
 
 from api.routes.authors import authors_api
 from api.routes.books import  books_api
+from api.routes.users import  users_api
 
+
+#for jwt
+from flask_jwt_extended import JWTManager
+
+# App initiliazing
 app = Flask(__name__)
 
+key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODY0MjExOSwianRpIjoiZmQ2NGM5N2EtMGQ5Zi00M2U1LTk5NWMtNWI3ZDA5MDlkYjc2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IlNPRFlBTSIsIm5iZiI6MTY4ODY0MjExOSwiZXhwIjoxNjg4NjQzMDE5fQ.kMmzhcHzoM8xVVEwbXZwIJ7dFKstVecAp4hWwWsTjxw"
+# SET the secret key
+app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
 
-# Registering the author routes
+# Registering  routes
 app.register_blueprint(authors_api, url_prefix='/api/authors')
 app.register_blueprint(books_api, url_prefix='/api/books')
+app.register_blueprint(users_api, url_prefix='/api/users')
 
 def get_congig_env():
     if os.environ.get('WORK_ENV') == 'PROD':
@@ -78,5 +88,10 @@ logging.basicConfig(
 )
 
 
+
+# JWT  Auth Initializing
+jwt = JWTManager(app)
+
+# LAUNCHING APP
 if __name__ == '__main__':
     create_app().run(port=5001, use_reloader=False)
