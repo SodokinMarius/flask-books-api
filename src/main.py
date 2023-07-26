@@ -25,6 +25,22 @@ from flask_jwt_extended import JWTManager
 # App initiliazing
 app = Flask(__name__)
 
+
+#Mail config
+
+
+app.config.update(dict(
+    DEBUG = True,
+    MAIL_SERVER = 'smtp.gmail.com',
+    MAIL_PORT = 465,
+    MAIL_USE_TLS = False,
+    # MAIL_PORT = 587,
+    MAIL_DEFAULT_SENDER='yaomariussodokin@gmail.com',
+    MAIL_USE_SSL = True,
+    MAIL_USERNAME = 'yaomariussodokin@gmail.com',
+    MAIL_PASSWORD = 'lwubrrlsefquxxlw',
+))
+
 key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODY0MjExOSwianRpIjoiZmQ2NGM5N2EtMGQ5Zi00M2U1LTk5NWMtNWI3ZDA5MDlkYjc2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IlNPRFlBTSIsIm5iZiI6MTY4ODY0MjExOSwiZXhwIjoxNjg4NjQzMDE5fQ.kMmzhcHzoM8xVVEwbXZwIJ7dFKstVecAp4hWwWsTjxw"
 # SET the secret key
 app.config["JWT_SECRET_KEY"] = JWT_SECRET_KEY
@@ -92,6 +108,13 @@ logging.basicConfig(
 # JWT  Auth Initializing
 jwt = JWTManager(app)
 
+
+# Import the mail in utils/emails and initialize it
+from api.utils.emails import  mail
+mail.init_app(app)
+
 # LAUNCHING APP
 if __name__ == '__main__':
     create_app().run(port=5001, use_reloader=False)
+
+

@@ -11,6 +11,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), unique = True, nullable = False)
     password = db.Column(db.String(255), nullable = False)
+    email = db.Column(db.String(125), unique = True, nullable = False)
+    is_verified = db.Column(db.Boolean, default = False, nullable = False)
 
     def create(self):
         db.session.add(self)
@@ -22,11 +24,15 @@ class User(db.Model):
         return  cls.query.filter_by(username = username).first()
 
     @classmethod
-    def generate_hash(cls,password):
+    def find_by_email(cls, email: str):
+        return cls.query.filter_by(email=email).first()
+
+    @staticmethod
+    def generate_hash(password):
         return  sha256.hash(password)
 
-    @classmethod
-    def verify_hash(cls, password, hash):
+    @staticmethod
+    def verify_hash(password, hash):
         return  sha256.verify(password,hash)
 
 
@@ -37,3 +43,6 @@ class UserSchema(ModelSchema):
     id = fields.Number(dump_only=True)
     username = fields.String(required=True)
     password = fields.String(required=True)
+    email = fields.String(required=True)
+
+

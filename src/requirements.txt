@@ -13,4 +13,8 @@ marshmallow-sqlalchemy==0.29.0
 passlib
 flask-jwt-extended==4.5.2
 
+# for mailing
+Flask-Mail==0.9.1
+
+
 
