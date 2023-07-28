@@ -1,11 +1,17 @@
 from ..utils.database import  db
 from ..utils.responses import response_with
 from ..utils import  responses as resp
-
+import os
 from ..models.authors import Author,AuthorSchema
 from ..utils.database import db
 from flask import  request
 from flask import  make_response,jsonify
+
+from werkzeug.utils import secure_filename
+from flask import   request, url_for, current_app, send_from_directory
+
+from ..utils.utils import allowed_file
+
 class AuthorController:
 
     @classmethod
@@ -30,6 +36,41 @@ class AuthorController:
             print('Retour',val)
             return val
 
+
+    @classmethod
+    def upload_author_avatar(cls,author_id):
+        try:
+            file = request.files.get('avatar')
+            author = Author.query.get_or_404(author_id)
+
+            if file and allowed_file(file.content_type):
+                filename = secure_filename(file.filename) # escaping the filename
+                file.save(os.path.join(
+                    current_app.config.get("UPLOAD_FOLDER"),
+                                       filename
+                ))
+            #Update the retrieved author's avatar
+            author.avatar = url_for('uploaded_file',
+                                    filename=filename,
+                                    _external=True)
+            db.session.add(author)
+            db.session.commit()
+
+            author_serialializer = AuthorSchema()
+            updated_author = author_serialializer.dump(author)
+
+            return  response_with(resp.SUCCESS_200,
+                                  value={"items": updated_author})
+        except Exception as e:
+            print (e)
+            return  response_with(resp.INVALID_INPUT_422)
+
+    @classmethod
+    def render_file(cls, filename):
+        return  send_from_directory(
+            current_app.config.get('UPLOAD_FOLDER') ,
+            filename
+        )
     @classmethod
     def get_all_authors(cls):
         authors_query = Author.query.all()

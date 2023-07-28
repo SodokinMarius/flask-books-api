@@ -34,6 +34,16 @@ class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = f'{DATABASE_ENGINE}+pymysql://{DATABASE_USERNAME}:{DATABASE_USER_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{TEST_DATABASE_NAME}'
     DEBUG = True
     SQLALCHEMY_ECHO = False
+    SECRET_KEY = 'SECRET-KEY'
+    SECURITY_PASSWORD_SALT = 'PASSWORD-SALT'
+    MAIL_DEFAULT_SENDER = "yaomariussodokin@gmail.com"
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USERNAME = "yaomariussodokin@gmail.com"
+    MAIL_PASSWORD = "lwubrrlsefquxxlw"
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
+    UPLOAD_FOLDER = 'images'
 
 SECRET_VALUES = {
 "SECRET_KEY" : secrets.token_hex(16),

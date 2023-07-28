@@ -9,7 +9,7 @@ def generate_verification_token(email):
     # return  serializer.dump(email, salt=current_app.get('SECURITY_PASSWORD_SALT'))
     return  serializer.dumps(email, salt=SECRET_VALUES.get('SECURITY_PASSWORD_SALT'))
 
-def confirm_verification_token(token, expiration=3600):
+def confirm_verification_token(token, expiration=86400):
     # serializer = URLSafeTimedSerializer(current_app.config.get('SECRET_KEY'))
     serializer = URLSafeTimedSerializer(SECRET_VALUES.get('SECRET_KEY'))
     try :

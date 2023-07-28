@@ -20,7 +20,7 @@ class Usercontroller:
     
     @classmethod
     def register(cls):
-        # try:
+        try:
             data : dict = request.get_json()
 
             # password crypting
@@ -61,11 +61,11 @@ class Usercontroller:
                                  "data":response
 
                              })
-        # except Exception as e:
-        #     print("Suite",e)
-        #     val =  response_with(resp.INVALID_INPUT_422)
-        #     print('Retour',val)
-        #     return val
+        except Exception as e:
+            print("Suite",e)
+            val =  response_with(resp.INVALID_INPUT_422)
+            print('Retour',val)
+            return val
 
     @classmethod
     def authenticate_user(cls):
@@ -107,6 +107,7 @@ class Usercontroller:
     def verify_email(cls,token):
         try :
             email = confirm_verification_token(token)
+            print("Email after verification ==>",email)
         except Exception as e:
             return response_with(resp.SERVER_ERROR_500)
 

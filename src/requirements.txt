@@ -17,4 +17,14 @@ flask-jwt-extended==4.5.2
 Flask-Mail==0.9.1
 
 
+# Swagger
+flask-swagger==0.2.14
+flask-swagger-ui==3.36.0
+
+
+#testing
+unittest2==1.1.0
+
+
+
 

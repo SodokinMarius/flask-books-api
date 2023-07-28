@@ -22,6 +22,14 @@ from api.routes.users import  users_api
 #for jwt
 from flask_jwt_extended import JWTManager
 
+
+#for swagger
+
+
+from flask_swagger import  swagger
+from flask_swagger_ui import  get_swaggerui_blueprint
+
+
 # App initiliazing
 app = Flask(__name__)
 
@@ -39,6 +47,7 @@ app.config.update(dict(
     MAIL_USE_SSL = True,
     MAIL_USERNAME = 'yaomariussodokin@gmail.com',
     MAIL_PASSWORD = 'lwubrrlsefquxxlw',
+    UPLOAD_FOLDER= 'images'
 ))
 
 key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4ODY0MjExOSwianRpIjoiZmQ2NGM5N2EtMGQ5Zi00M2U1LTk5NWMtNWI3ZDA5MDlkYjc2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IlNPRFlBTSIsIm5iZiI6MTY4ODY0MjExOSwiZXhwIjoxNjg4NjQzMDE5fQ.kMmzhcHzoM8xVVEwbXZwIJ7dFKstVecAp4hWwWsTjxw"
@@ -108,6 +117,28 @@ logging.basicConfig(
 # JWT  Auth Initializing
 jwt = JWTManager(app)
 
+
+# swagger configuration
+@app.route("/api/spec")
+def spec():
+    swag = swagger(app, prefix='/api')
+    swag['info'].update(
+        {
+            "base": "http://localhost:5000",
+            "version":"1.0",
+            "title":"Flask Library API",
+
+        }
+    )
+    return   jsonify(swag)
+
+
+SWAGGER_URL = '/api/docs'
+
+swaggerui_blueprint = get_swaggerui_blueprint('/api/docs',
+'/api/spec', config={'app_name': "Flask Library API"})
+
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 # Import the mail in utils/emails and initialize it
 from api.utils.emails import  mail

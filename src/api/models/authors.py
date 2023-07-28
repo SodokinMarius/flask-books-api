@@ -13,12 +13,14 @@ class Author(db.Model):
     last_name = db.Column(db.String(255),nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     books = db.relationship('Book',backref='authors', cascade = 'all , delete-orphan', uselist=True)
+    # avatar = db.Column(db.String(25),nullable=True)
 
 
-    def __init__(self,first_name, last_name, books=[]):
+    def __init__(self,first_name, last_name, books=[], avatar=None):
         self.first_name = first_name
         self.last_name = last_name
         self.books = books
+        # self.avatar = avatar
 
     def __repr__(self):
         return  f'{self.first_name} - {self.last_name}'
@@ -35,5 +37,6 @@ class AuthorSchema(ModelSchema):
     first_name = fields.String(required=True)
     last_name = fields.String(required=True)
     created =  fields.String(dump_only=True)
+    # avatar = fields.String(dump_only=False)
     books = fields.Nested(BookSchema,many=True,
                           only=['title','year','id'])
